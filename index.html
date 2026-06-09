@@ -19,6 +19,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { -webkit-user-select: none; user-select: none; -webkit-user-drag: none; }
 
     html, body {
       width: 100%; height: 100%;
@@ -71,15 +72,16 @@
     /* ── Aarti orbit wrapper ── */
     .aarti-ring {
       position: relative;
-      width: 380px; height: 380px;
+      width: 560px; height: 560px;
       display: flex; align-items: center; justify-content: center;
     }
 
-    /* ── Om SVG ── */
+    /* ── Om centerpiece ── */
     .om-wrap {
       position: relative;
       display: flex; align-items: center; justify-content: center;
       z-index: 3;
+      width: 380px; height: 380px;
     }
     .om-glow {
       position: absolute;
@@ -91,9 +93,30 @@
         transparent 70%);
       animation: pulse-halo 2.8s ease-in-out infinite;
     }
-    .om-svg {
+    .om-text {
       position: relative; z-index: 2;
+      font-family: 'Tiro Devanagari Sanskrit', 'Noto Sans Devanagari', serif;
+      font-size: 9rem;
+      line-height: 1;
+      background: linear-gradient(160deg, #fff8c0 0%, #f5c842 35%, #c9922a 70%, #8b5e00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       filter: drop-shadow(0 0 18px #f5c842cc) drop-shadow(0 0 40px #ff993366);
+      animation: pulse-om 2.8s ease-in-out infinite;
+      user-select: none;
+    }
+    /* Ganesh photo */
+    .ganesh-img {
+      position: relative; z-index: 3;
+      width: 380px; height: 380px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid rgba(245,200,66,0.4);
+      box-shadow:
+        0 0 0 6px rgba(245,200,66,0.08),
+        0 0 30px #f5c84299,
+        0 0 70px #ff993355;
       animation: pulse-om 2.8s ease-in-out infinite;
     }
 
@@ -109,7 +132,7 @@
     /* ── Diya ── */
     .diya-container {
       position: absolute;
-      width: 380px; height: 380px;
+      width: 560px; height: 560px;
       top: 0; left: 0;
       animation: spin-orbit 8s linear infinite;
     }
@@ -140,7 +163,7 @@
     /* ── Second smaller diya (counter-orbit for richness) ── */
     .diya-container-2 {
       position: absolute;
-      width: 300px; height: 300px;
+      width: 480px; height: 480px;
       top: 40px; left: 40px;
       animation: spin-orbit-2 13s linear infinite reverse;
     }
@@ -187,6 +210,32 @@
       z-index: 5;
       animation: petal-fall linear infinite;
       opacity: 0;
+    }
+
+    /* ── Tap to begin overlay ── */
+    .tap-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: rgba(13,0,5,0.82);
+      backdrop-filter: blur(6px);
+      cursor: pointer;
+      transition: opacity 0.6s ease;
+    }
+    .tap-overlay.hidden { opacity: 0; pointer-events: none; }
+    .tap-icon {
+      font-size: 3.5rem;
+      margin-bottom: 16px;
+      animation: pulse-halo 1.8s ease-in-out infinite;
+      filter: drop-shadow(0 0 14px #f5c842aa);
+    }
+    .tap-label {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(0.75rem, 2vw, 1rem);
+      color: var(--gold);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      opacity: 0.85;
     }
 
     /* ── Audio toggle ── */
@@ -349,46 +398,11 @@
       <div class="diya-2">🪔</div>
     </div>
 
-    <!-- Om Ganesh centerpiece -->
+    <!-- Ganesh centerpiece -->
     <div class="om-wrap">
       <div class="om-glow"></div>
-      <svg class="om-svg" width="170" height="170" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="omGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%"   stop-color="#fff8c0"/>
-            <stop offset="40%"  stop-color="#f5c842"/>
-            <stop offset="80%"  stop-color="#c9922a"/>
-            <stop offset="100%" stop-color="#8b5e00"/>
-          </radialGradient>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="4" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-        </defs>
-        <!-- Lotus base petals -->
-        <g transform="translate(100,100)" fill="none" stroke="#c9922a" stroke-width="1.2" opacity="0.55">
-          <ellipse rx="10" ry="28" transform="translate(0,58)"/>
-          <ellipse rx="10" ry="28" transform="translate(0,58) rotate(45)"/>
-          <ellipse rx="10" ry="28" transform="translate(0,58) rotate(90)"/>
-          <ellipse rx="10" ry="28" transform="translate(0,58) rotate(135)"/>
-          <ellipse rx="10" ry="28" transform="translate(0,58) rotate(180)"/>
-          <ellipse rx="10" ry="28" transform="translate(0,58) rotate(225)"/>
-          <ellipse rx="10" ry="28" transform="translate(0,58) rotate(270)"/>
-          <ellipse rx="10" ry="28" transform="translate(0,58) rotate(315)"/>
-        </g>
-        <!-- OM symbol text -->
-        <text
-          x="100" y="118"
-          text-anchor="middle"
-          font-family="'Tiro Devanagari Sanskrit', serif"
-          font-size="110"
-          fill="url(#omGrad)"
-          filter="url(#glow)"
-        >ॐ</text>
-        <!-- decorative dot above -->
-        <circle cx="100" cy="22" r="5" fill="#f5c842" opacity="0.7"/>
-        <circle cx="100" cy="22" r="9" fill="none" stroke="#f5c842" stroke-width="0.8" opacity="0.4"/>
-      </svg>
+      <img class="ganesh-img" id="ganesh-img" src="ganesh.png" alt="Shree Ganesh">
+      <div class="om-text" id="om-fallback">ॐ</div>
     </div>
   </div>
 
@@ -400,18 +414,40 @@
 <!-- Floating rose petals -->
 <div id="petals"></div>
 
+<!-- Tap to begin overlay -->
+<div class="tap-overlay" id="tap-overlay">
+  <div class="tap-icon">🪔</div>
+  <div class="tap-label">Tap to begin puja</div>
+</div>
+
 <!-- Audio -->
-<audio id="mantra-audio" src="mantra.mp3" loop autoplay></audio>
+<audio id="mantra-audio" src="mantra.mp3" loop></audio>
 
 <!-- Mute toggle -->
-<button class="audio-btn muted" id="audio-btn" title="Toggle mantra audio">🔇</button>
+<button class="audio-btn" id="audio-btn" title="Toggle mantra audio">🔊</button>
 
 <script>
-  // ── Audio toggle ──
-  const audio = document.getElementById('mantra-audio');
-  const btn   = document.getElementById('audio-btn');
-  audio.muted = true; // start muted (browser policy); user can unmute
+  // ── Ganesh image: hide OM fallback on success, show on error ──
+  const ganeshImg  = document.getElementById('ganesh-img');
+  const omFallback = document.getElementById('om-fallback');
+  omFallback.style.display = 'none'; // assume image loads; show OM only on error
+  ganeshImg.addEventListener('error', () => {
+    ganeshImg.style.display = 'none';
+    omFallback.style.display = '';
+  });
 
+  // ── Tap-to-start: dismiss overlay and play audio ──
+  const audio   = document.getElementById('mantra-audio');
+  const btn     = document.getElementById('audio-btn');
+  const overlay = document.getElementById('tap-overlay');
+
+  overlay.addEventListener('click', () => {
+    overlay.classList.add('hidden');
+    audio.play().catch(() => {});
+    setTimeout(() => overlay.remove(), 700);
+  });
+
+  // ── Audio mute toggle ──
   btn.addEventListener('click', () => {
     audio.muted = !audio.muted;
     btn.textContent = audio.muted ? '🔇' : '🔊';
@@ -469,6 +505,82 @@
     requestAnimationFrame(drawParticles);
   }
   drawParticles();
+
+  // ── Drag flower trail with gravity physics ──
+  const trailEmojis = ['🌸', '🌺', '🌼', '🏵️', '🌻', '💐', '🌹', '🪷'];
+  let isDragging = false;
+  let lastTrailX = -999, lastTrailY = -999;
+  const activeFlowers = [];
+
+  function spawnTrailFlower(x, y) {
+    const count = 1 + Math.floor(Math.random() * 2); // 1-2 per point
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('span');
+      const size = 1.1 + Math.random() * 1.4;
+      const vx = (Math.random() - 0.5) * 4;
+      const vy = -(0.6 + Math.random() * 0.9); // initial upward burst
+      const rot = Math.random() * 360;
+      const spin = (Math.random() - 0.5) * 6;
+      el.style.cssText = `
+        position: fixed;
+        left: ${x}px;
+        top: ${y}px;
+        font-size: ${size}rem;
+        pointer-events: none;
+        z-index: 150;
+        transform-origin: center;
+        will-change: transform, opacity;
+      `;
+      el.textContent = trailEmojis[Math.floor(Math.random() * trailEmojis.length)];
+      document.body.appendChild(el);
+
+      activeFlowers.push({
+        el, x, y, vx, vy,
+        rot, spin,
+        born: performance.now(),
+        life: 1800 + Math.random() * 1200,
+      });
+    }
+  }
+
+  // Physics loop for flowers
+  function tickFlowers(now) {
+    for (let i = activeFlowers.length - 1; i >= 0; i--) {
+      const f = activeFlowers[i];
+      const age = now - f.born;
+      if (age > f.life) { f.el.remove(); activeFlowers.splice(i, 1); continue; }
+
+      f.vy += 0.0135;        // gravity
+      f.vx *= 0.995;         // air drag
+      f.x  += f.vx;
+      f.y  += f.vy;
+      f.rot += f.spin;
+
+      const progress = age / f.life;
+      // fade out in final 35%
+      const opacity = progress > 0.65 ? 1 - (progress - 0.65) / 0.35 : 1;
+
+      f.el.style.transform = `translate(${f.x - parseFloat(f.el.style.left)}px, ${f.y - parseFloat(f.el.style.top)}px) rotate(${f.rot}deg)`;
+      f.el.style.opacity = opacity;
+    }
+    requestAnimationFrame(tickFlowers);
+  }
+  requestAnimationFrame(tickFlowers);
+
+  document.addEventListener('mousedown', (e) => {
+    if (e.target.closest('.tap-overlay, .audio-btn')) return;
+    isDragging = true;
+    spawnTrailFlower(e.clientX, e.clientY);
+    lastTrailX = e.clientX; lastTrailY = e.clientY;
+  });
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const dx = e.clientX - lastTrailX, dy = e.clientY - lastTrailY;
+    if (dx * dx + dy * dy < 400) return; // spawn every ~20px
+    spawnTrailFlower(e.clientX, e.clientY);
+    lastTrailX = e.clientX; lastTrailY = e.clientY;
+  });
+  document.addEventListener('mouseup', () => { isDragging = false; });
 
   // ── Falling flower petals ──
   const petalContainer = document.getElementById('petals');
